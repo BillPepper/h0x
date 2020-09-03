@@ -1,0 +1,19 @@
+{
+  "name": "h0x",
+  "version": "1.0.0",
+  "description": "Electron based Hex Editor",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "hex",
+    "editor",
+    "electron"
+  ],
+  "author": "Mattes Jup",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^10.1.1"
+  }
+}
