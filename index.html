@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        color: #999;
+        list-style: none;
+        font-family: "sans";
+        font-size: 15px;
+      }
+      body {
+        background-color: #333;
+        display: grid;
+        grid-template-columns: min-content auto min-content;
+      }
+      #list,
+      #listAscii {
+        display: grid;
+        grid-template-columns: repeat(8, 30px); /* amount (8) is set by code */
+        text-align: center;
+      }
+      #list > li {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+      }
+      #list > li:nth-child(odd) {
+        background-color: #222;
+      }
+      #listAscii {
+        grid-column: 3;
+        grid-template-columns: repeat(8, 20px); /* amount (8) is set by code */
+      }
+      #listAscii > li {
+        width: 20px;
+        height: 30px;
+        line-height: 30px;
+      }
+      .null {
+        color: #444;
+      }
+      .selected {
+        border: 1px solid salmon;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="list"></ul>
+    <ul id="listAscii"></ul>
+  </body>
+  <script>
+    const list = document.getElementById("list");
+    const listAscii = document.getElementById("listAscii");
+    const bytesToDisplay = 8;
+    const skipMultZero = false; // replaces multi zero values by just one, only works for hex side
+    const rawd =
+      "7F454C4602010100414902000000000002003E000100000090464000000000004000000000000000E8D702000000000000000000400038000800400020001F000600000005000000400000000000000040004000000000004000400000000000C0010000000000C0" +
+      "7F454C4602010100414902000000000002003E000100000090464000000000004000000000000000E8D702000000000000000000400038000800400020001F000600000005000000400000000000000040004000000000004000400000000000C0010000000000C0" +
+      "7F454C4602010100414902000000000002003E000100000090464000000000004000000000000000E8D702000000000000000000400038000800400020001F000600000005000000400000000000000040004000000000004000400000000000C0010000000000C0" +
+      "7F454C4602010100414902000000000002003E000100000090464000000000004000000000000000E8D702000000000000000000400038000800400020001F000600000005000000400000000000000040004000000000004000400000000000C0010000000000C0";
+
+    let selectIndex = 0;
+    let lastByte = "";
+
+    const rawToArr = () => {
+      const chunkSize = 2;
+      const dLength = rawd.length;
+
+      let position = 0;
+      let arr = [];
+      let arrAscii = [];
+
+      for (let i = 0; i < dLength / chunkSize; i++) {
+        const chunk = rawd.slice(position, position + chunkSize);
+        arr.push(chunk);
+        arrAscii.push(hex_to_ascii(chunk));
+        position += chunkSize;
+      }
+      return arr;
+    };
+
+    const renderData = (data) => {
+      for (let i = 0; i < data.length; i++) {
+        const elem = document.createElement("li");
+        const currentByte = data[i];
+
+        if (currentByte === "00") {
+          elem.classList.add("null");
+        }
+        if (i === selectIndex) {
+          elem.classList.add("selected");
+        }
+        if (currentByte === "00" && lastByte === "00" && skipMultZero) {
+          console.log("skip byte");
+        } else {
+          elem.innerText = data[i];
+          list.appendChild(elem);
+        }
+        lastByte = currentByte;
+      }
+    };
+
+    const renderAscii = (data) => {
+      for (let i = 0; i < data.length; i++) {
+        const elem = document.createElement("li");
+        if (i === selectIndex) {
+          elem.classList.add("selected");
+        }
+        if (data[i] === "00") {
+          elem.innerText = ".";
+        } else {
+          elem.innerText = hex_to_ascii(data[i]);
+        }
+        listAscii.appendChild(elem);
+      }
+    };
+
+    const setBytesToDisplay = (bytes) => {
+      list.style.gridTemplateColumns = `repeat(${bytes}, 30px)`;
+      listAscii.style.gridTemplateColumns = `repeat(${bytes}, 20px)`;
+    };
+
+    function hex_to_ascii(str1) {
+      var hex = str1.toString();
+      var str = "";
+      for (var n = 0; n < hex.length; n += 2) {
+        str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+      }
+      return str;
+    }
+
+    setBytesToDisplay(16);
+    const arrData = rawToArr();
+    renderData(arrData);
+    renderAscii(arrData);
+  </script>
+</html>
