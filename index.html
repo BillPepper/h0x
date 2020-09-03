@@ -22,6 +22,24 @@
       grid-template-columns: min-content auto min-content;
     }
 
+    body {
+      background-color: #333;
+      display: grid;
+      grid-template-columns: min-content auto min-content;
+    }
+
+    body::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    body::-webkit-scrollbar-track {
+      background: #ddd;
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background: #666;
+    }
+
     #menu {
       grid-row: 1;
       margin: 10px 0;
