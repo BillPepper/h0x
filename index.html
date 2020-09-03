@@ -141,5 +141,16 @@
     const arrData = rawToArr();
     renderData(arrData);
     renderAscii(arrData);
+
+    document.addEventListener("click", (e) => {
+      const selectedElements = document.getElementsByClassName("selected");
+      for (let i = 0; i < selectedElements.length; i++) {
+        selectedElements[i].classList.remove("selected");
+      }
+
+      if (e.target.tagName === "LI") {
+        e.target.classList.add("selected");
+      }
+    });
   </script>
 </html>
