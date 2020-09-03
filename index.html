@@ -19,8 +19,21 @@
         display: grid;
         grid-template-columns: min-content auto min-content;
       }
+      #menu {
+        grid-row: 1;
+        margin: 10px 0;
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 20px;
+        line-height: 20px;
+      }
+      select {
+        background-color: #444;
+        border-radius: 3px;
+      }
       #list,
       #listAscii {
+        grid-row: 2;
         display: grid;
         grid-template-columns: repeat(8, 30px); /* amount (8) is set by code */
         text-align: center;
@@ -53,6 +66,24 @@
     </style>
   </head>
   <body>
+    <div id="menu">
+      <label>Length</label>
+      <select>
+        <option>2</option>
+        <option>4</option>
+        <option>8</option>
+        <option>16</option>
+        <option>32</option>
+        <option>64</option>
+        <option>128</option>
+      </select>
+      <label>Encoding</label>
+      <select>
+        <option>ANSI</option>
+      </select>
+      <label>Redundant zeros</label>
+      <input type='checkbox'></input>
+    </div>
     <ul id="list"></ul>
     <ul id="listAscii"></ul>
   </body>
